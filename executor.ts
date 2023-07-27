@@ -1,8 +1,14 @@
 import { Worker } from "worker_threads";
-import { ThreadEvents, WorkerDataType, WorkerTaskResponse } from "./models";
+import {
+  MyEmitterEvents,
+  ThreadEvents,
+  WorkerDataType,
+  WorkerTaskResponse,
+} from "./models";
+import EventEmitter from "./myEmitter";
+const { EventEmitterInstance: myEmitter } = EventEmitter;
 
 export const runWorkerThread = (command: string, clientId: string) => {
-//   console.log(command, clientId);
   return new Promise((resolve, reject) => {
     const data: WorkerDataType = {
       command,
@@ -12,7 +18,7 @@ export const runWorkerThread = (command: string, clientId: string) => {
     const worker = new Worker("./worker.js", { workerData: data });
     worker.on(ThreadEvents.MESSAGE, (threadResponse: WorkerTaskResponse) => {
       console.log("resolving", threadResponse.flag);
-      //   myEmitter.emit(MyEmitterEvents.THREAD_RESPONSE, threadResponse);
+      myEmitter.emit(MyEmitterEvents.THREAD_RESPONSE, threadResponse);
       resolve(threadResponse);
     });
 

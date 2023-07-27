@@ -20,7 +20,7 @@ const process: ChildProcess = exec(
 
 if (process != null && process.stdout != null) {
   process.stdout.on("data", (data: string) => {
-    console.log("ONGOING", dataParameter.clientId, data);
+    // console.log("ONGOING", dataParameter.clientId, data);
     const parent = parentPort as MessagePort;
     const processResponse: WorkerTaskResponse = {
       flag: ProcessFlags.ONGOING.toString(),
